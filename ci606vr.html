@@ -1,0 +1,403 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>CI606 Project</title>
+		<script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
+	</head>
+
+	<body>
+        <a-scene background="color:#ECECEC">
+			<!-- Texture assets -->
+			<a-assets>
+                <img id="carpet"src="assets/carpet.jpg">
+				<img id="table" src="assets/table.jpg">
+				<img id="sidetable" src="assets/sidetable.jpg">
+				<img id="wallpaper" src="assets/wallpaper.jpg">
+				<img id="ceiling" src="assets/ceiling.jpg">
+				<img id="paper" src="assets/paper.jpg">
+				<a-mixin id="plane" geometry="primitive:plane" material="src:#paper; side:double"></a-mixin>
+            </a-assets>
+
+			<!-- Player camera -->
+			<a-camera id="player" position="0 0 0">
+				<a-entity cursor="rayOrigin:mouse; fuse: true; fuseTimeout: 500"
+						  position="0 0 -1"
+						  geometry="primitive: ring; radiusInner: 0.01; radiusOuter: 0.02"
+						  material="color: black; shader: flat"
+						  ui teleport-controls>
+				</a-entity>
+			</a-camera>
+
+			<!-- Scene geometry -->
+			<a-entity id="tablePoll" geometry="primitive:cylinder; height: 3.5; radius: 0.5" material="color:gray" position="3 -4 0"></a-entity>
+			<a-entity id="tableTop" geometry="primitive:cylinder; height: 0.25; radius: 2" material="src:#table" position="3 -2 0"></a-entity>
+			<a-entity id="sideTable1" geometry="primitive:box; height:4; width:2; depth:5" material="src:#sidetable" position="17 -4 0"></a-entity>
+			<a-entity id="sideTable2" geometry="primitive:box; height:4; width:2; depth:5" material="src:#sidetable" position="-11 -4 0"></a-entity>
+			<a-entity id="wall1" geometry="primitive:plane; height:15; width:30" material="src:#wallpaper; side:double" position="3 0.5 14"></a-entity>
+            <a-entity id="wall2" geometry="primitive:plane; height:15; width:30" material="src:#wallpaper; side:double" position="3 0.5 -15" rotation="0 180 0"></a-entity>
+            <a-entity id="wall3" geometry="primitive:plane; height:15; width:30" material="src:#wallpaper; side:double" position="18 0.5 0" rotation="0 90 0" ></a-entity>
+            <a-entity id="wall4" geometry="primitive:plane; height:15; width:30" material="src:#wallpaper; side:double" position="-12 0.5 0" rotation="0 90 0"></a-entity>
+			<a-entity id="floor" geometry="primitive:plane; height:40; width: 40" material="src:#carpet; side:double" position="4 -5 0" rotation="90 0 0"></a-entity>
+			<a-entity id="ceiling" geometry="primitive:plane; height:40; width: 40" material="src:#ceiling; side:double" position="4 8 0" rotation="90 0 0"></a-entity>
+			
+			<!-- Question & answer planes (excludes the text) -->
+			<a-entity mixin="paper plane" id="question" position="1.9 -1.75 0" geometry="height:0.75; width:1.5" rotation="90 90 0" material geometry></a-entity>
+			<a-entity mixin="paper plane" id="answer1" position="17 -1.9 0" geometry="height:0.5; width:1" rotation="90 90 0" material geometry answer1-click></a-entity>
+			<a-entity mixin="paper plane" id="answer2" position="-11 -1.9 0" geometry="height:0.5; width:1" rotation="90 -90 0" material geometry answer2-click></a-entity>
+			<a-entity mixin="paper plane" id="answer3" position="10 1 13.95" geometry="height:0.5; width:1" rotation="0 0 0" material geometry answer3-click></a-entity>
+			<a-entity mixin="paper plane" id="answer4" position="-3 1 13.95" geometry="height:0.5; width:1" rotation="0 0 0" material geometry answer4-click></a-entity>
+			<a-entity mixin="paper plane" id="answer5" position="10 1 -14.95" geometry="height:0.5; width:1" rotation="0 180 0" material geometry answer5-click></a-entity>
+			<a-entity mixin="paper plane" id="answer6" position="-3 1 -14.95" geometry="height:0.5; width:1" rotation="0 180 0" material geometry answer6-click></a-entity>
+			
+			<!-- Question & answer text -->
+			<a-entity id="questionText" text="width: 3.5; letterSpacing: 2; color: blue; value: Find the factors of \n 3x^2-8x-11" position="1.85 -1.7 1.05" rotation="-90 -90 0"></a-entity>
+			<a-entity id="answer1Text" text="width: 5; letterSpacing: 2; color: blue; value: (x+1)" position="17 -1.9 2.2" rotation="-90 -90 0"></a-entity>
+			<a-entity id="answer2Text" text="width: 5; letterSpacing: 2; color: blue; value: (x+2)" position="-11 -1.9 -2.2" rotation="-90 90 0"></a-entity>
+			<a-entity id="answer3Text" text="width: 5; letterSpacing: 2; color: blue; value: (x+3)" position="7.8 1 13.9" rotation="0 180 0"></a-entity>
+			<a-entity id="answer4Text" text="width: 5; letterSpacing: 2; color: blue; value: (x-5)" position="-5.2 1 13.9" rotation="0 180 0"></a-entity>
+			<a-entity id="answer5Text" text="width: 5; letterSpacing: 2; color: blue; value: (x-8)" position="12.2 1 -14.9" rotation="0 0 0"></a-entity>
+			<a-entity id="answer6Text" text="width: 5; letterSpacing: 2; color: blue; value: (x-2)" position="-0.75 1 -14.9" rotation="0 0 0"></a-entity>
+
+			<!-- Answer slots -->
+			<a-entity mixin="paper plane" id="slot1" position="3.25 -1.75 -1.2" geometry="height:0.5; width:1" rotation="90 90 0" material geometry slot1-click></a-entity>
+			<a-entity mixin="paper plane" id="slot2" position="3.25 -1.75 0" geometry="height:0.5; width:1" rotation="90 90 0" material geometry slot2-click></a-entity>
+			<a-entity mixin="paper plane" id="slot3" position="3.25 -1.75 1.2" geometry="height:0.5; width:1" rotation="90 90 0" material geometry slot3-click></a-entity>
+
+			<!-- Sphere teleporters -->
+			<a-sphere position="15 -4.9 0" radius="0.75" color="#EFFD5E" class="clickable" onClick="document.querySelector('#player').setAttribute('position', '15 1.5 0')"></a-sphere>
+			<a-sphere position="-9 -4.9 0" radius="0.75" color="#EFFD5E" class="clickable" onClick="document.querySelector('#player').setAttribute('position', '-9 1.5 0')"></a-sphere>
+			<a-sphere position="10 -4.9 12" radius="0.75" color="#EFFD5E" class="clickable" onClick="document.querySelector('#player').setAttribute('position', '10 1.5 12')"></a-sphere>
+			<a-sphere position="-3 -4.9 12" radius="0.75" color="#EFFD5E" class="clickable" onClick="document.querySelector('#player').setAttribute('position', '-3 1.5 12')"></a-sphere>
+			<a-sphere position="10 -4.9 -13" radius="0.75" color="#EFFD5E" class="clickable" onClick="document.querySelector('#player').setAttribute('position', '10 1.5 -13')"></a-sphere>
+			<a-sphere position="-3 -4.9 -13" radius="0.75" color="#EFFD5E" class="clickable" onClick="document.querySelector('#player').setAttribute('position', '-3 1.5 -13')"></a-sphere>
+			<a-sphere position="0 -4.9 0" radius="0.75" color="#EFFD5E" class="clickable" onClick="document.querySelector('#player').setAttribute('position', '0 1.5 0')"></a-sphere>
+			<a-sphere position="6 -4.9 0" radius="0.75" color="#EFFD5E" class="clickable" onClick="document.querySelector('#player').setAttribute('position', '6 1.5 0')"></a-sphere>
+
+		</a-scene>
+
+		<script>
+			// Variable initialisation
+			var player = document.querySelector('#player');
+			var answer1 = document.querySelector('#answer1');
+			var answer2 = document.querySelector('#answer2');
+			var answer3 = document.querySelector('#answer3');
+			var answer4 = document.querySelector('#answer4');
+			var answer5 = document.querySelector('#answer5');
+			var answer6 = document.querySelector('#answer6');
+
+			var answer1text = document.querySelector('#answer1Text');
+			var answer2text = document.querySelector('#answer2Text');
+			var answer3text = document.querySelector('#answer3Text');
+			var answer4text = document.querySelector('#answer4Text');
+			var answer5text = document.querySelector('#answer5Text');
+			var answer6text = document.querySelector('#answer6Text');
+
+			var slot1 = document.querySelector('#slot1');
+			var slot2 = document.querySelector('#slot2');
+			var slot3 = document.querySelector('#slot3');
+
+			var teleport1 = document.querySelector('#teleport1');
+			var teleport2 = document.querySelector('#teleport2');
+			var teleport3 = document.querySelector('#teleport3');
+			var teleport4 = document.querySelector('#teleport4');
+			var teleport5 = document.querySelector('#teleport5');
+			var teleport6 = document.querySelector('#teleport6');
+
+			var position = "0 -0.5 -2";
+			var textposition = "2.2 -0.5 -2";
+			var rotation1 = "0 0 0";
+			var rotation2 = "0 180 0";
+			var slotposition = "0 0 0";
+			var slottextposition = "-2.1 0 -0.1";
+
+			// Answer click functions -- These allow the player to pick up the answers
+			AFRAME.registerComponent('answer1-click', {
+				init: function() {
+					this.el.addEventListener('click', function(evt) {
+						if(player.parentNode != answer1) {
+							if(slot1.parentNode != answer1 && slot2.parentNode != answer1 && slot3.parentNode != answer1) {
+								player.appendChild(answer1);
+								answer1.setAttribute('position', position);
+								answer1.setAttribute('rotation', rotation1);
+								if(player.parentNode != answer1text) {
+									player.appendChild(answer1text);
+									answer1text.setAttribute('position', textposition);
+									answer1text.setAttribute('rotation', rotation1);
+								}
+							}
+						}
+					});
+				}
+			});
+
+			AFRAME.registerComponent('answer2-click', {
+				init: function() {
+					this.el.addEventListener('click', function(evt) {
+						if(player.parentNode != answer2) {
+							if(slot1.parentNode != answer2 && slot2.parentNode != answer2 && slot3.parentNode != answer2) {
+								player.appendChild(answer2);
+								answer2.setAttribute('position', position);
+								answer2.setAttribute('rotation', rotation1);
+								if(player.parentNode != answer2text) {
+									player.appendChild(answer2text);
+									answer2text.setAttribute('position', textposition);
+									answer2text.setAttribute('rotation', rotation1);
+								}
+							}
+						}
+					});
+				}
+			});
+
+			AFRAME.registerComponent('answer3-click', {
+				init: function() {
+					this.el.addEventListener('click', function(evt) {
+						if(player.parentNode != answer3) {
+							if(slot1.parentNode != answer3 && slot2.parentNode != answer3 && slot3.parentNode != answer3) {
+								player.appendChild(answer3);
+								answer3.setAttribute('position', position);
+								answer3.setAttribute('rotation', rotation1);
+								if(player.parentNode != answer3text) {
+									player.appendChild(answer3text);
+									answer3text.setAttribute('position', textposition);
+									answer3text.setAttribute('rotation', rotation1);
+								}
+							}
+						}
+					});
+				}
+			});
+
+			AFRAME.registerComponent('answer4-click', {
+				init: function() {
+					this.el.addEventListener('click', function(evt) {
+						if(player.parentNode != answer4) {
+							if(slot1.parentNode != answer4 && slot2.parentNode != answer4 && slot3.parentNode != answer4) {
+								player.appendChild(answer4);
+								answer4.setAttribute('position', position);
+								if(player.parentNode != answer4text) {
+									player.appendChild(answer4text);
+									answer4text.setAttribute('position', textposition);
+									answer4text.setAttribute('rotation', rotation1);
+								}
+							}
+						}
+					});
+				}
+			});
+
+			AFRAME.registerComponent('answer5-click', {
+				init: function() {
+					this.el.addEventListener('click', function(evt) {
+						if(player.parentNode != answer5) {
+							if(slot1.parentNode != answer5 && slot2.parentNode != answer5 && slot3.parentNode != answer5) {
+								player.appendChild(answer5);
+								answer5.setAttribute('position', position);
+								if(player.parentNode != answer5text) {
+									player.appendChild(answer5text);
+									answer5text.setAttribute('position', textposition);
+									answer5text.setAttribute('rotation', rotation1);
+								}
+							}
+						}
+					});
+				}
+			});
+
+			AFRAME.registerComponent('answer6-click', {
+				init: function() {
+					this.el.addEventListener('click', function(evt) {
+						if(player.parentNode != answer6) {
+							if(slot1.parentNode != answer6 && slot2.parentNode != answer6 && slot3.parentNode != answer6) {
+								player.appendChild(answer6);
+								answer6.setAttribute('position', position);
+								if(player.parentNode != answer6text) {
+									player.appendChild(answer6text);
+									answer6text.setAttribute('position', textposition);
+									answer6text.setAttribute('rotation', rotation1);
+								}
+							}
+						}
+					});
+				}
+			});
+
+			// Slot click functions -- allows the player to place the answers into the slots
+			AFRAME.registerComponent('slot1-click', {
+				init: function() {
+					this.el.addEventListener('click', function(evt) {
+						if(player.contains(answer1)) {
+							slot1.appendChild(answer1);
+							slot1.appendChild(answer1Text);
+
+							answer1.setAttribute('position', slotposition);
+							answer1Text.setAttribute('position', slottextposition);
+							answer1Text.setAttribute('rotation', rotation2);
+						}
+						else if(player.contains(answer2)) {
+							slot1.appendChild(answer2);
+							slot1.appendChild(answer2Text);
+
+							answer2.setAttribute('position', slotposition);
+							answer2Text.setAttribute('position', slottextposition);
+							answer2Text.setAttribute('rotation', rotation2);
+							
+						}
+						else if(player.contains(answer3)) {
+							slot1.appendChild(answer3);
+							slot1.appendChild(answer3Text);
+
+							answer3.setAttribute('position', slotposition);
+							answer3Text.setAttribute('position', slottextposition);
+							answer3Text.setAttribute('rotation', rotation2);
+						}
+						else if(player.contains(answer4)) {
+							slot1.appendChild(answer4);
+							slot1.appendChild(answer4Text);
+
+							answer4.setAttribute('position', slotposition);
+							answer4Text.setAttribute('position', slottextposition);
+							answer4Text.setAttribute('rotation', rotation2);
+						}
+						else if(player.contains(answer5)) {
+							slot1.appendChild(answer5);
+							slot1.appendChild(answer5Text);
+
+							answer5.setAttribute('position', slotposition);
+							answer5Text.setAttribute('position', slottextposition);
+							answer5Text.setAttribute('rotation', rotation2);
+						}
+						else if(player.contains(answer6)) {
+							slot1.appendChild(answer6);
+							slot1.appendChild(answer6Text);
+
+							answer6.setAttribute('position', slotposition);
+							answer6Text.setAttribute('position', slottextposition);
+							answer6Text.setAttribute('rotation', rotation2);
+						}
+					})
+				}
+			});
+
+			AFRAME.registerComponent('slot2-click', {
+				init: function() {
+					this.el.addEventListener('click', function(evt) {
+						if(player.contains(answer1)) {
+							slot2.appendChild(answer1);
+							slot2.appendChild(answer1Text);
+
+							answer1.setAttribute('position', slotposition);
+							answer1Text.setAttribute('position', slottextposition);
+							answer1Text.setAttribute('rotation', rotation2);
+						}
+						else if(player.contains(answer2)) {
+							slot2.appendChild(answer2);
+							slot2.appendChild(answer2Text);
+
+							answer2.setAttribute('position', slotposition);
+							answer2Text.setAttribute('position', slottextposition);
+							answer2Text.setAttribute('rotation', rotation2);
+						}
+						else if(player.contains(answer3)) {
+							slot2.appendChild(answer3);
+							slot2.appendChild(answer3Text);
+
+							answer3.setAttribute('position', slotposition);
+							answer3Text.setAttribute('position', slottextposition);
+							answer3Text.setAttribute('rotation', rotation2);
+						}
+						else if(player.contains(answer4)) {
+							slot2.appendChild(answer4);
+							slot2.appendChild(answer4Text);
+
+							answer4.setAttribute('position', slotposition);
+							answer4Text.setAttribute('position', slottextposition);
+							answer4Text.setAttribute('rotation', rotation2);
+						}
+						else if(player.contains(answer5)) {
+							slot2.appendChild(answer5);
+							slot2.appendChild(answer5Text);
+
+							answer5.setAttribute('position', slotposition);
+							answer5Text.setAttribute('position', slottextposition);
+							answer5Text.setAttribute('rotation', rotation2);
+						}
+						else if(player.contains(answer6)) {
+							slot2.appendChild(answer6);
+							slot2.appendChild(answer6Text);
+
+							answer6.setAttribute('position', slotposition);
+							answer6Text.setAttribute('position', slottextposition);
+							answer6Text.setAttribute('rotation', rotation2);
+						}
+					})
+				}
+			});
+
+			AFRAME.registerComponent('slot3-click', {
+				init: function() {
+					this.el.addEventListener('click', function(evt) {
+						if(player.contains(answer1)) {
+							slot3.appendChild(answer1);
+							slot3.appendChild(answer1Text);
+
+							answer1.setAttribute('position', slotposition);
+							answer1Text.setAttribute('position', slottextposition);
+							answer1Text.setAttribute('rotation', rotation2);
+						}
+						else if(player.contains(answer2)) {
+							slot3.appendChild(answer2);
+							slot3.appendChild(answer2Text);
+
+							answer2.setAttribute('position', slotposition);
+							answer2Text.setAttribute('position', slottextposition);
+							answer2Text.setAttribute('rotation', rotation2);
+						}
+						else if(player.contains(answer3)) {
+							slot3.appendChild(answer3);
+							slot3.appendChild(answer3Text);
+
+							answer3.setAttribute('position', slotposition);
+							answer3Text.setAttribute('position', slottextposition);
+							answer3Text.setAttribute('rotation', rotation2);
+						}
+						else if(player.contains(answer4)) {
+							slot3.appendChild(answer4);
+							slot3.appendChild(answer4Text);
+
+							answer4.setAttribute('position', slotposition);
+							answer4Text.setAttribute('position', slottextposition);
+							answer4Text.setAttribute('rotation', rotation2);
+						}
+						else if(player.contains(answer5)) {
+							slot3.appendChild(answer5);
+							slot3.appendChild(answer5Text);
+
+							answer5.setAttribute('position', slotposition);
+							answer5Text.setAttribute('position', slottextposition);
+							answer5Text.setAttribute('rotation', rotation2);
+						}
+						else if(player.contains(answer6)) {
+							slot3.appendChild(answer6);
+							slot3.appendChild(answer6Text);
+
+							answer6.setAttribute('position', slotposition);
+							answer6Text.setAttribute('position', slottextposition);
+							answer6Text.setAttribute('rotation', rotation2);
+						}
+					})
+				}
+			});
+
+
+			AFRAME.registerComponent('teleport', { // https://wirewhiz.com/teleporting/
+				init: function() {
+					var position = this.data.position;
+					this.el.addEventListener('click', function(evt) {
+						player.setAttribute('position', position);
+					})
+				}
+			});
+		</script>
+	</body>
+</html>
